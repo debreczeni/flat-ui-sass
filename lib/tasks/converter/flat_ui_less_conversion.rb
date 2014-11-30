@@ -57,7 +57,8 @@ class Converter
             end
             file = replace_ms_filters(file)
             if pro?
-              file = replace_all file, /(?<=[.-])\$state/, '#{$state}'
+              # TODO: fix this below
+              # file = replace_all file, /(?<=[.-])\$state/, '#{$state}'
             else
               # calc-color mixin only exists in Flat-UI free
               file = replace_all file, /-(\$.+-color)/, '-#{\1}'
@@ -142,7 +143,7 @@ class Converter
               parts = rule.split "\n"
               selector = parts.index {|line| line =~ /\.bg-primary/}
               mixin = parts.index {|line| line =~ /@include/}
-              parts.insert(mixin, "}\n#{parts[selector]}")
+              parts.insert(mixin, "}\n#{parts[selector]}") if mixin
               rule = parts.join "\n"
             end
             file = apply_mixin_parent_selector(file, '\.(text|bg)-(success|primary|info|warning|danger)')
